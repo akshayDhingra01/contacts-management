@@ -1,12 +1,13 @@
 const asyncHandler = require("express-async-handler")  // To handle the exceptions by using this library
-
+const Contact = require("../models/contact.model")
 
 // @desc Get all Contacts
 // @route Get /api/contacts
 // @access public
 
 const getContacts = asyncHandler (async (req, res) => {
-    res.status(200).json({ message: "Get all contacts" });
+    let allContacts = await Contact.find();
+    res.status(200).json({ message: allContacts });
 })
 
 // @desc create Contact
@@ -19,7 +20,14 @@ const createContact = asyncHandler (async (req, res) => {
         res.status(400)
         throw new Error("All fields are mandatory")
     }
-    res.status(201).json({ message: "contact created" });
+
+    const contact = await Contact.create({
+        name,
+        email,
+        phone
+    })
+
+    res.status(201).json(contact);
 })
 
 // @desc Get Contact by id
