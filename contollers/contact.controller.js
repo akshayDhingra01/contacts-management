@@ -56,6 +56,11 @@ const updateContact = asyncHandler (async (req, res) => {
         throw new Error("Contact not found")
     }
 
+    if (contact.user_id.toString() != req.user.id) {
+        req.status(403);
+        throw new Error("User not authorized to udpate other user contacts")
+    }
+
     const udpatedContact = await Contact.findByIdAndUpdate(
         req.params.id,
         req.body,
@@ -78,6 +83,12 @@ const deleteContact = asyncHandler (async (req, res) => {
         res.status(400)
         throw new Error("Contact not found");
     }
+
+    if (contact.user_id.toString() != req.user.id) {
+        req.status(403);
+        throw new Error("User not authorized to udpate other user contacts")
+    }
+
     await Contact.findByIdAndDelete(req.params.id);
 
     res.status(201).json(contact);
