@@ -67,10 +67,11 @@ const loginUser = asyncHandler (async (req, res) => {
         const accessToken = jwt.sign({
             user : {
                 username: user.username,
-                email: user.email
+                email: user.email,
+                id : user.id
             },
         },  process.env.ACCESS_TOKEN_SECRET,
-            {expiresIn: "1m"}
+            {expiresIn: "10m"}
         )
         res.status(200).json({accessToken})
     } else {
@@ -84,7 +85,7 @@ const loginUser = asyncHandler (async (req, res) => {
 // @route Get /api/users/user
 // @access private
 const userInformation = asyncHandler (async (req, res) => {
-    res.status(200).json({message : "users information"})
+    res.status(200).json(req.user)
 });
 
 module.exports = {registerUser, loginUser, userInformation}
