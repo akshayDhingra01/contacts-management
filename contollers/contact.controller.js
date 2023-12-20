@@ -6,8 +6,8 @@ const Contact = require("../models/contact.model")
 // @access private
 
 const getContacts = asyncHandler (async (req, res) => {
-    let allContacts = await Contact.find();
-    res.status(200).json({ message: allContacts });
+    let allContacts = await Contact.find({user_id : req.user.id});
+    res.status(200).json({ data: allContacts });
 })
 
 // @desc create Contact
